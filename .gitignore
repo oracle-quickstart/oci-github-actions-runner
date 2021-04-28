@@ -6,6 +6,7 @@
 *.tfstate.*
 *.zip*
 *.tfvars
+terraform.tfvars
 
 # General
 .DS_Store

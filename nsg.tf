@@ -6,7 +6,7 @@ resource "oci_core_network_security_group" "simple_nsg" {
   #Optional
   display_name = var.nsg_display_name
 
-  freeform_tags = map(var.tag_key_name, var.tag_value)
+  freeform_tags = tomap({ "${var.tag_key_name}" = "${var.tag_value}" })
 }
 
 # Allow Egress traffic to all networks
@@ -66,6 +66,8 @@ resource "oci_core_network_security_group_security_rule" "simple_rule_http_ingre
     }
   }
 }
+
+
 
 # Allow ANY Ingress traffic from within simple vcn
 resource "oci_core_network_security_group_security_rule" "simple_rule_all_simple_vcn_ingress" {

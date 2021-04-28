@@ -6,5 +6,30 @@ region = "us-ashburn-1"
 
 compute_compartment_ocid = "ocid1.compartment.oc1."
 network_compartment_ocid = "ocid1.compartment.oc1."
-availability_domain_number = "1"
+ad_number = "1"
 ssh_public_key = "ssh-rsa AAA...H"
+
+number_of_runners = 1
+compute_shape = "VM.Standard.A1.Flex"
+flex_shape_ocpus  = 1
+flex_shape_memory = 6
+
+
+### Custom Image ###
+#compute_image_strategy = "Custom Image"
+#custom_image_ocid = "ocid1.image.<mycustom_image_ocid>"
+
+
+### Platform Image ###
+compute_image_strategy = "Platform Image"
+platform_image_ocid = "ocid1.image.<my_platform_image_ocid>"
+
+
+
+### GitHub Actions Runner Configuration ###
+github_runner_label_list = "oci"
+github_runner_version    = "2.278.0"
+
+# GitHub Repo URL
+github_url                       = "https://github.com/<my-org>/<my-repo>/"
+github_runner_registration_token = "<Registration Token>"

@@ -1,90 +1,87 @@
 # Title shown in Application Information tab.
-title: Sample Marketplace Stack / ORM Application - BYOL
+title: GitHub Actions Runner
 # Sub Title shown in Application Information tab.
-description: This is a Sample Marketplace Stack / ORM Application - BYOL
+description: The runner is the application that runs a job from a GitHub Actions workflow. It is used by GitHub Actions in the hosted virtual environments, or you can self-host the runner in your own environment.
 schemaVersion: 1.1.0
 version: "20190304"
 
-# URL of Logo Icon used on Application Information tab. You can copy the contentId from the Marketplace listing logo URL in the Marketplace Partner portal.
-# (Optional)
-logoUrl: https://cloudmarketplace.oracle.com/marketplace/content?contentId=71617800
-
-# Used in Application Information tab to Hyperlink Title and Logo to the Marketplace
-# Listing.
-# Also used to link to Listing Usage section for "View Instructions".
-# (Optional) If it is missing, Application Information uses the
-# "marketplace-listing-id" tag for the same purpose.
-source:
-  type: marketplace
-  reference: 12345
+informationalText: The runner is the application that runs a job from a GitHub Actions workflow. It is used by GitHub Actions in the hosted virtual environments, or you can self-host the runner in your own environment. It is not recommend to use self-hosted Runners on public repos. More information on https://github.com/actions/runner
 
 locale: "en"
 variableGroups:
-  - title: "Hidden Variable Group"
+  - title: "Hidden Variable Group"    
     visible: false
     variables:
-#"variables used internally - not exposed to end user"
-      - tenancy_ocid
-      - region
-      - mp_listing_id
-      - mp_listing_resource_id
-      - mp_listing_resource_version
-      - availability_domain_number
-      - mp_subscription_enabled
+#"variables used internally - not exposed to end user"    
+      - tenancy_ocid 
+      - region 
+      - ad_number          
+      - compute_image_strategy_enum
       - network_strategy_enum
       - subnet_type_enum
       - nsg_config_enum
-      #change compute.tf and move custom_image_id to Compute group in case you want to use a custom_image
-      - custom_image_id
+
+  - title: "GitHub Actions Runner Configuration"
+    variables:      
+      - github_url
+      - github_runner_registration_token
+      - number_of_runners
+      - github_runner_label_list
+      - github_runner_version
 
   - title: "Compute Configuration"
     variables:
       - compute_compartment_ocid
+      - availability_domain_name
       - vm_display_name
       - hostname_label
-      - vm_compute_shape
-      - vm_flex_shape_ocpus
-      - availability_domain_name
+      - compute_shape
+      - flex_shape_memory
+      - flex_shape_ocpus
+      - compute_image_strategy
+      - operating_system
+      - platform_image_ocid
+      - custom_image_ocid
       - ssh_public_key
-
+      
 
   - title: "Virtual Cloud Network"
     variables:
       - network_compartment_ocid
       - network_strategy
-      - network_configuration_strategy
-      - vcn_id
-      - vcn_display_name
+      - network_configuration_strategy      
+      - vcn_id 
+      - vcn_display_name       
       - vcn_dns_label
-      - vcn_cidr_block
+      - vcn_cidr_block              
 
-  - title: "Simple Subnet"
+  - title: "Subnet"
     visible: #($network_strategy  == ""Use Existing VCN and Subnet"") OR (network_configuration_strategy ==  "Customize Network Configuration")
       or:
-        - eq:
-          - network_strategy
-          - "Use Existing VCN and Subnet"
+        - eq:         
+          - network_strategy 
+          - "Use Existing VCN and Subnet"    
         - eq:
           - network_configuration_strategy
           - "Customize Network Configuration"
     variables:
       - subnet_type
-      - subnet_id
-      - subnet_display_name
+      - subnet_id 
+      - subnet_display_name             
       - subnet_dns_label
-      - subnet_cidr_block
+      - subnet_cidr_block            
       - nsg_configuration_strategy
 
   - title: "Network Security Group"
     visible: #($nsg_configuration_strategy  ==  "Customize Network Security Group")
       eq:
-        - nsg_configuration_strategy
+        - nsg_configuration_strategy 
         - "Customize Network Security Group"
     variables:
       - nsg_display_name
       - nsg_source_cidr
       - nsg_ssh_port
-      - nsg_http_port
+      - nsg_http_port                              
       - nsg_https_port
 
   - title: "Additional Configuration Options"
@@ -117,47 +114,40 @@ variables:
     description: The region in which to create all resources
     required: true
 
-  availability_domain_number:
-    type: string
-    required: false
+  ad_number:
+    type: string    
+    required: false    
     description: Availability Domain Number (Not used)
 
-######################################################
-##############   MARKETPLACE VARIABLES   #############
-######################################################
 
-  mp_listing_id:
+#########################################################
+##############   GitHub Runner VARIABLES   #############
+########################################################
+
+  github_url:
     type: string
     required: true
-    description: Marketplace Listing ID
+    title: GitHub URL (Organization or Repository)
 
-  mp_listing_resource_id:
-    type: oci:core:image:id
-    required: true
-    description: Marketplace Image OCID
-    dependsOn:
-      compartmentId: compute_compartment_ocid
-
-  mp_listing_resource_version:
+  github_runner_registration_token:
     type: string
     required: true
-    description: Marketplace Listing package version
-
-
-  mp_subscription_enabled:
-    type: boolean
-    title: Use Marketplace Image?
-    default: false
-
-  custom_image_id:
+    title: GitHub Actions Runner Registration Token
+  
+  github_runner_label_list:
     type: string
     required: true
-    title: Custom Image OCID
-    # visible:
-    #   eq:
-    #     - mp_subscription_enabled
-    #     - false
+    title: Runner Tag List
 
+  number_of_runners:
+    type: number
+    required: true
+    title: Number of Runner Instances
+
+  github_runner_version:
+    type: string
+    required: false
+    title: GitHub Actions Runner Version
 
   tag_key_name:
     type: string
@@ -173,6 +163,58 @@ variables:
 ######################################################
 ##############    COMPUTE VARIABLES      #############
 ######################################################
+  operating_system:
+    type: enum
+    title: Operating System
+    description: Select the Operating System
+    enum:
+      # - "CentOS 6"
+      # - "CentOS 7"
+      # - "Oracle Autonomous Linux 7"
+      # - "Oracle Linux 6"
+      # - "Oracle Linux 7"
+      - "Oracle Linux 8"
+      # - "Ubuntu 16.04"
+      # - "Ubuntu 18.04"
+      # - "Ubuntu 20.04"
+    required: true
+    default: "Oracle Linux 8"
+
+  compute_image_strategy:
+    type: enum
+    title: Compute Image Strategy
+    description: Use either a Platform or Custom Image
+    enum:
+      - "Platform Image"
+      - "Custom Image"
+    required: true
+    default: "Platform Image"
+
+
+  platform_image_ocid:
+    visible: #($compute_image_strategy  == """Platform Image""")
+      eq:
+        - compute_image_strategy 
+        - "Platform Image"
+    type: oci:core:image:id
+    required: true
+    title: Platform Image
+    dependsOn:
+      compartmentId: compute_compartment_ocid
+      operatingSystem: "Oracle Linux"
+      operatingSystemVersion: "8"
+      shape: compute_shape
+
+  custom_image_ocid:
+    visible: #($compute_image_strategy  == """Custom Image""")
+      eq:
+        - compute_image_strategy 
+        - "Custom Image"
+    type: string
+    required: true
+    title: Custom Image
+    dependsOn:
+      compartmentId: compute_compartment_ocid
 
   compute_compartment_ocid:
     type: oci:identity:compartment:id
@@ -193,8 +235,8 @@ variables:
   ssh_public_key:
     type: oci:core:ssh:publickey
     required: true
-    title: Public SSH Key string
-    description: Public SSH Key to access VM via SSH
+    title: Public SSH Key
+    description: Public SSH Key to access GitHub Actions Runner instance via SSH
 
   vm_display_name:
     type: string
@@ -202,32 +244,61 @@ variables:
     title: Instance Name
     description: The name of the Instance
 
-  vm_compute_shape:
+  compute_shape:
+    visible: #($compute_image_strategy  == """Platform Image""")
     type: oci:core:instanceshape:name
-    default: VM.Standard2.2
+    default: VM.Standard.E4.Flex
     title: Compute Shape
     required: true
     dependsOn:
       compartmentId: compute_compartment_ocid
-      imageId: mp_listing_resource_id
-
-  vm_flex_shape_ocpus:
-    visible: #($vm_compute_shape  == ""VM.Standard.E3.Flex"")
-      eq:
-        - vm_compute_shape
-        - "VM.Standard.E3.Flex"
+  
+  flex_shape_ocpus:
+    visible:
+      - or:
+        - eq:
+          - compute_shape
+          - "VM.Standard.E3.Flex"
+        - eq:
+          - compute_shape
+          - "VM.Standard.E4.Flex"
+        - eq:
+          - compute_shape
+          - "VM.Standard.A1.Flex"
     type: integer
-    default: 2
+    default: 1
     title: Flex Shape OCPUs
     minimum: 1
     maximum: 64
     required: false
+    description: Maximum of 64 OCPUs
+
+    
+  flex_shape_memory:
+    visible:
+      - or:
+        - eq:
+          - compute_shape
+          - "VM.Standard.E3.Flex"
+        - eq:
+          - compute_shape
+          - "VM.Standard.E4.Flex"
+        - eq:
+          - compute_shape
+          - "VM.Standard.A1.Flex"
+    type: integer
+    default: 6
+    title: Flex Shape Memory 
+    minimum: 1
+    maximum: 1024
+    required: false
+    description: Minimum 1GB or 6GB. Maximum of 64GB per OCPU up to 1024GB
 
   hostname_label:
     type: string
     required: false
     title: DNS Hostname Label
-
+      
 
 ######################################################
 ##############     NETWORK VARIABLES     #############
@@ -238,7 +309,7 @@ variables:
     required: true
     title: Network Compartment
     description: The compartment in which to create all Network resources
-    default: compartment_ocid
+    default: compartment_ocid    
 
 
   # Network Type Options
@@ -257,7 +328,7 @@ variables:
   network_configuration_strategy:
     visible: #($network_strategy  == ""Create New VCN and Subnet"")
       eq:
-        - network_strategy
+        - network_strategy 
         - "Create New VCN and Subnet"
     type: enum
     title: Configuration Strategy
@@ -270,13 +341,13 @@ variables:
 
 
 
-######## VCN ########
+######## VCN ########    
 
   vcn_display_name:
     visible: #($network_strategy  == ""Create New VCN and Subnet"") AND (network_configuration_strategy ==  "Customize Network Configuration")
       and:
-        - eq:
-          - network_strategy
+        - eq: 
+          - network_strategy 
           - "Create New VCN and Subnet"
         - eq:
           - network_configuration_strategy
@@ -289,11 +360,11 @@ variables:
   vcn_id:
     visible: #($network_strategy  == "Use Existing VCN and Subnet")
       eq:
-        - network_strategy
+        - network_strategy 
         - "Use Existing VCN and Subnet"
     type: oci:core:vcn:id
     dependsOn:
-      compartmentId: network_compartment_ocid
+      compartmentId: network_compartment_ocid 
     required: true
     title: Existing VCN
     description: An existing Virtual Cloud Network (VCN) in which to create the compute instances, network resources, and load balancers. If not specified, a new VCN is created.
@@ -301,8 +372,8 @@ variables:
   vcn_cidr_block:
     visible: #($network_strategy  == ""Create New VCN and Subnet"") AND (network_configuration_strategy ==  "Customize Network Configuration")
       and:
-        - eq:
-          - network_strategy
+        - eq: 
+          - network_strategy 
           - "Create New VCN and Subnet"
         - eq:
           - network_configuration_strategy
@@ -316,8 +387,8 @@ variables:
   vcn_dns_label:
     visible: #($network_strategy  == ""Create New VCN and Subnet"") AND (network_configuration_strategy ==  "Customize Network Configuration")
       and:
-        - eq:
-          - network_strategy
+        - eq: 
+          - network_strategy 
           - "Create New VCN and Subnet"
         - eq:
           - network_configuration_strategy
@@ -326,14 +397,14 @@ variables:
     required: true
     title: DNS Label
     maxLenght: 15
-    description: VCN DNS Label. Only letters and numbers, starting with a letter. 15 characters max.
+    description: VCN DNS Label. Only letters and numbers, starting with a letter. 15 characters max.    
 
 ######## MANAGEMENT SUBNET ########
   subnet_type:
-    visible: #($network_strategy  == ""Create New VCN and Subnet"")
-      eq:
-        - network_strategy
-        - "Create New VCN and Subnet"
+    # visible: #($network_strategy  == ""Create New VCN and Subnet"")
+    #   eq:
+    #     - network_strategy 
+    #     - "Create New VCN and Subnet"
     type: enum
     title: Subnet Type
     description: Choose between private and public subnets
@@ -342,11 +413,11 @@ variables:
       - "Public Subnet"
     required: true
     default: "Public Subnet"
-
+    
   subnet_display_name:
     visible: #($network_strategy  == ""Create New VCN and Subnet"")
       eq:
-        - network_strategy
+        - network_strategy 
         - "Create New VCN and Subnet"
     type: string
     required: true
@@ -356,7 +427,7 @@ variables:
   subnet_cidr_block:
     visible: #($network_strategy  == ""Create New VCN and Subnet"")
       eq:
-        - network_strategy
+        - network_strategy 
         - "Create New VCN and Subnet"
     type: string
     pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
@@ -367,12 +438,20 @@ variables:
   subnet_id:
     visible: #($network_strategy  == "Use Existing VCN and Subnet")
       eq:
-        - network_strategy
-        - "Use Existing VCN and Subnet"
+        - network_strategy 
+        - "Use Existing VCN and Subnet"    
     type: oci:core:subnet:id
     dependsOn:
-      vcnId: vcn_id
+      vcnId: vcn_id 
       compartmentId: network_compartment_ocid
+      hidePublicSubnet:
+        eq:
+          - subnet_type
+          - "Private Subnet"
+      hidePrivateSubnet:
+        eq:
+          - subnet_type
+          - "Public Subnet"
     default: ''
     required: true
     title: Existing Subnet
@@ -381,13 +460,13 @@ variables:
   subnet_dns_label:
     visible: #($network_strategy  == ""Create New VCN and Subnet"")
       eq:
-        - network_strategy
+        - network_strategy 
         - "Create New VCN and Subnet"
     type: string
     required: true
     title: DNS Label
     maxLenght: 15
-    description: Subnet DNS Label. Only letters and numbers, starting with a letter. 15 characters max.
+    description: Subnet DNS Label. Only letters and numbers, starting with a letter. 15 characters max.    
 
 ######################################################
 ##############    SECURITY VARIABLES     #############
@@ -410,7 +489,7 @@ variables:
     type: string
     required: false
     title: Name
-
+    
   nsg_ssh_port:
     type: number
     required: false
@@ -437,39 +516,40 @@ variables:
 
 
 
-
 #############################################
 ###########    OUTPUT GROUPS     ############
 #############################################
 
 outputGroups:
-  - title: "Instance Management"
+  - title: "Connection Details"
     outputs:
       - instance_public_ip
       - instance_private_ip
-
+      - server_url
 
 #############################################
 ##############     OUTPUTS     ##############
 #############################################
 
 outputs:
-  instance_https_url:
-    type: link
-    title: Open Application URL
+  vcn_cidr_block:
+    type: string
+    title: VCN CIDR
+    visible: false    
+
+  instance_id:
+    type: ocid    
     visible: false
 
   instance_public_ip:
     type: link
     title: Public IP
-    visible: #($mgmt_subnet_type == "Public Subnet")
+    visible: #($subnet_type == "Public Subnet")
       eq:
-      - mgmt_subnet_type
-      - "Public Subnet"
-
+        - subnet_type
+        - "Public Subnet"
+  
   instance_private_ip:
     type: link
     title: Private IP
     visible: true
-
-primaryOutputButton: instance_https_url
