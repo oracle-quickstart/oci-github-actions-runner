@@ -14,21 +14,16 @@ jobs:
   publish_artifact:
     name: 'Publish Artifact as Latest Release'
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-        working-directory: build-orm
     steps:
       - uses: actions/checkout@v2              
-      - name: 'Generate ORM Stack zip file'
+      - name: 'Generate OCI ORM Stack zip file'
         run: |
-          pwd
+          cd ${{ github.workspace }}/build-orm
           sh -x build.sh
-          ls -la
-      - name: 'Upload Artifact'
+      - name: 'Generate pre-release for ORM click to deploy button'
         uses: eine/tip@master
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag: 'latest'
+          tag: 'orm-deploy'
           files: |
-            ./*.zip
+            ${{ github.workspace }}/build-orm/orm.zip
