@@ -23,7 +23,11 @@ jobs:
         uses: actions/checkout@v2
       
       - name: 'Generate ORM Stack zip file'
-        run: sh -x build.sh
+        run: |
+          pwd
+          ls -la
+          sh -x build.sh
+
 
       - name: 'Upload Artifact to latest pre-release'
         uses: eine/tip@master
