@@ -19,7 +19,7 @@ jobs:
         shell: bash
         working-directory: build-orm
     steps:
-        uses: actions/checkout@v2      
+      - uses: actions/checkout@v2              
       - name: 'Generate ORM Stack zip file'
         run: |
           pwd
