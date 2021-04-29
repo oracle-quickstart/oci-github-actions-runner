@@ -1,0 +1,34 @@
+name: 'publish-latest-release'
+
+on:
+  # Trigger the workflow on push or pull request,
+  # but only for the main branch
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  latest_release:
+    name: 'Publish Latest Release Artifact'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: build-orm
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+      
+      - name: 'Generate ORM Stack zip file'
+        run: sh -x build.sh
+
+      - name: 'Upload Artifact to latest pre-release'
+        uses: eine/tip@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: 'latest'
+          files: |
+            ./orm.zip
