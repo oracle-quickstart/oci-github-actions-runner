@@ -1,4 +1,4 @@
-name: 'publish-latest-release'
+name: 'publish-orm-stack'
 
 on:
   # Trigger the workflow on push or pull request,
@@ -12,18 +12,20 @@ on:
 
 jobs:
   publish_artifact:
-    name: 'Publish Artifact as Latest Release'
+    name: 'Publish Release for ORM Stack'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2              
-      - name: 'Generate OCI ORM Stack zip file'
+      - name: 'Generate ORM Stack zip file'
         run: |
           cd ${{ github.workspace }}/build-orm
           sh -x build.sh
-      - name: 'Generate pre-release for ORM click to deploy button'
+      - name: 'Publish Release'
         uses: eine/tip@master
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          #Artifact will be available for download at: https://github.com/<organization>/<repository>/releases/download/<tag>/<zip file>
+          #E.g. https://github.com/oracle-quickstart/oci-github-actions-runner/releases/download/orm-deploy/orm.zip
           tag: 'orm-deploy'
           files: |
             ${{ github.workspace }}/build-orm/orm.zip
