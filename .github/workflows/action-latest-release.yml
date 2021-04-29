@@ -11,28 +11,24 @@ on:
       - main
 
 jobs:
-  latest_release:
-    name: 'Publish Latest Release Artifact'
+  publish_artifact:
+    name: 'Publish Artifact as Latest Release'
     runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
         working-directory: build-orm
     steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-      
+        uses: actions/checkout@v2      
       - name: 'Generate ORM Stack zip file'
         run: |
           pwd
-          ls -la
           sh -x build.sh
-
-
-      - name: 'Upload Artifact to latest pre-release'
+          ls -la
+      - name: 'Upload Artifact'
         uses: eine/tip@master
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: 'latest'
           files: |
-            ./orm.zip
+            ./*.zip
