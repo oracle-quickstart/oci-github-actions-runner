@@ -30,10 +30,10 @@ resource "oci_core_instance" "simple-vm" {
 
   metadata = {
     ssh_authorized_keys = var.ssh_public_key
-    user_data = base64encode(join("\n", list(
+    user_data = base64encode(join("\n", tolist([
       "#!/usr/bin/env bash",
       "set -x",
-      (data.template_file.install_runner_ol.rendered),
+      (data.template_file.install_runner_ol.rendered)],
     )))
   }
 

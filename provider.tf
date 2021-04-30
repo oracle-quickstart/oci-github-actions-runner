@@ -1,12 +1,3 @@
-terraform {
-  required_version = "~> 0.12"
-  required_providers {
-    oci = {
-      version = ">= 3.27"
-    }
-  }
-}
-
 provider "oci" {
   tenancy_ocid     = var.tenancy_ocid
   user_ocid        = var.user_ocid
