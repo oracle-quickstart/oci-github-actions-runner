@@ -21,11 +21,13 @@ jobs:
           cd ${{ github.workspace }}/build-orm
           sh -x build.sh
       - name: 'Publish Release'
-        uses: eine/tip@master
+        uses: "marvinpinto/action-automatic-releases@v1.1.2"
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          #Artifact will be available for download at: https://github.com/<organization>/<repository>/releases/download/<tag>/<zip file>
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          #Artifact will be available for download at: https://github.com/<organization>/<repository>/releases/download/<automatic_release_tag>/<zip file>
           #E.g. https://github.com/oracle-quickstart/oci-github-actions-runner/releases/download/orm-deploy/orm.zip
-          tag: 'orm-deploy'
+          automatic_release_tag: "orm-deploy"
+          prerelease: true
+          title: "Latest Resource Manager Stack"
           files: |
             ${{ github.workspace }}/build-orm/orm.zip
