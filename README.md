@@ -2,22 +2,27 @@
 
 The [Oracle Cloud Infrastructure (OCI) Quick Start](https://github.com/oracle-quickstart?q=oci-quickstart) is a collection of examples that allow Oracle Cloud Infrastructure users to get a quick start deploying advanced infrastructure on OCI.
 
-oci-github-actions-runner contains the Terraform template that can be used for deploying GitHub Actions Runner that runs from local Terraform CLI, [OCI Resource Manager](https://docs.cloud.oracle.com/en-us/iaas/Content/ResourceManager/Concepts/resourcemanager.htm) and [OCI Cloud Shell](https://docs.cloud.oracle.com/en-us/iaas/Content/API/Concepts/cloudshellintro.htm).
+oci-github-actions-runner contains the Terraform template that can be used for deploying [GitHub Actions self-hosted Runners](https://docs.github.com/en/actions/hosting-your-own-runners/about-self-hosted-runners) that runs from local Terraform CLI, [OCI Resource Manager](https://docs.cloud.oracle.com/en-us/iaas/Content/ResourceManager/Concepts/resourcemanager.htm) and [OCI Cloud Shell](https://docs.cloud.oracle.com/en-us/iaas/Content/API/Concepts/cloudshellintro.htm). GitHub Actions self-hosted Runners can be associated with a GitHub repository, an organization or an enterprise.
 
-oci-github-actions-runner Terraform template deploys Compute Instances with GitHub Actions Runner installed on top of an existing or brand new Virtual Cloud Network. This Runner is setup on Oracle Linux 8 with support to Containers jobs.
+The terraform template deploys GitHub Actions self-hosted Runners to an existing or brand new Virtual Cloud Network. The self-hosted Runner can run on Virtual Machine or Bare Metal instances is setup on top of Oracle Linux 8 platform image and enable you to run container based workflows. Please install additional tools as required by your project workflow.
 
 This repo is under active development.  Building open source software is a community effort.  We're excited to engage with the community building this.
 
 ## Prerequisites
 
-First off we'll need to do some pre deploy setup.  That's all detailed [here](https://github.com/oracle/oci-quickstart-prerequisites).
+First off we'll need to do some pre deploy setup, that's all detailed [here](https://github.com/oracle/oci-quickstart-prerequisites).
+
+In order to deploy GitHub Actions Runner you also need to provide the following information:
+* URL of the GitHub repository/organization/enterprise
+* automatically-generated time-limited token to authenticate the request***
+
+More information on how to deploy GitHub Runners available [here](https://docs.github.com/en/actions/hosting-your-own-runners/adding-self-hosted-runners)
 
 ## Resource Manager Deployment
 
-This Quick Start uses [OCI Resource Manager](https://docs.cloud.oracle.com/iaas/Content/ResourceManager/Concepts/resourcemanager.htm)(ORM) to make deployment quite easy. Simply `build` your package and follow the [Resource Manager instructions](https://docs.cloud.oracle.com/en-us/iaas/Content/ResourceManager/Tasks/managingstacksandjobs.htm#console) for how to create a stack.  Prior to building the Stack, you may want to modify some parts of the deployment detailed in the sections below.
-Alternatively, you can click on the *Deploy to Oracle Cloud* button to automatically create your ORM Stack from the latest published file.
+This Quick Start uses [OCI Resource Manager](https://docs.cloud.oracle.com/iaas/Content/ResourceManager/Concepts/resourcemanager.htm)(ORM) to make deployment quite easy. You can customize the code available on this repo and  `build` your own ORM Stack following the [Resource Manager instructions](https://docs.cloud.oracle.com/en-us/iaas/Content/ResourceManager/Tasks/managingstacksandjobs.htm#console) detailed in the sections below. Alternatively, click on the *[Deploy to Oracle Cloud](#Deploy)* button in the Deploy section of this page to automatically create your ORM Stack based on the [latest release](https://github.com/oracle-quickstart/oci-github-actions-runner/releases) published through this repo.
 
-In case you want to build the Stack, make sure you have terraform v0.14+ cli installed and accessible from your terminal.
+In case you want to build the Stack, make sure you have Terraform v0.14+ cli installed and accessible from your terminal.
 
 ```bash
 terraform -v
