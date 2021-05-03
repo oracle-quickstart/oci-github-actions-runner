@@ -244,8 +244,7 @@ variables:
     title: Instance Name
     description: The name of the Instance
 
-  compute_shape:
-    visible: #($compute_image_strategy  == """Platform Image""")
+  compute_shape:    
     type: oci:core:instanceshape:name
     default: VM.Standard.E4.Flex
     title: Compute Shape
@@ -255,7 +254,7 @@ variables:
   
   flex_shape_ocpus:
     visible:
-      - or:
+      or:
         - eq:
           - compute_shape
           - "VM.Standard.E3.Flex"
@@ -276,7 +275,7 @@ variables:
     
   flex_shape_memory:
     visible:
-      - or:
+      or:
         - eq:
           - compute_shape
           - "VM.Standard.E3.Flex"
