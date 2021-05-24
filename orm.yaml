@@ -246,7 +246,7 @@ variables:
 
   compute_shape:    
     type: oci:core:instanceshape:name
-    default: VM.Standard.E4.Flex
+    default: VM.Standard.A1.Flex
     title: Compute Shape
     required: true
     dependsOn:

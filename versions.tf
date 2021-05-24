@@ -4,11 +4,13 @@ terraform {
 
   required_providers {
     oci = {
+      source  = "hashicorp/oci"
       version = ">= 4.24"
     }
+    
     template = {
-      version = ">= 2.2"
+      source  = "hashicorp/template"
+      version = ">= 2.1"
     }
-
   }
 }
