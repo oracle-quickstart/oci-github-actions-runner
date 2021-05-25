@@ -3,7 +3,7 @@ title: GitHub Actions Runner
 # Sub Title shown in Application Information tab.
 description: The runner is the application that runs a job from a GitHub Actions workflow. It is used by GitHub Actions in the hosted virtual environments, or you can self-host the runner in your own environment.
 schemaVersion: 1.1.0
-version: "20190304"
+version: "20201028"
 
 informationalText: The runner is the application that runs a job from a GitHub Actions workflow. It is used by GitHub Actions in the hosted virtual environments, or you can self-host the runner in your own environment. It is not recommend to use self-hosted Runners on public repos. More information on https://github.com/actions/runner
 
@@ -226,9 +226,9 @@ variables:
   availability_domain_name:
     type: oci:identity:availabilitydomain:name
     dependsOn:
+      regionName: region
       compartmentId: compute_compartment_ocid
     required: true
-    default: 1
     title: Availability Domain
     description: Availability Domain
 
