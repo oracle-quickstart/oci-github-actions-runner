@@ -41,7 +41,6 @@ variable "flex_shape_memory" {
 }
 
 variable "availability_domain_name" {
-  default     = ""
   description = "Availability Domain"
 }
 
