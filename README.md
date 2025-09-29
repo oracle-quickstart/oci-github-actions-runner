@@ -175,3 +175,18 @@ You can deploy the GitHub Actions self-hosted direct into your Oracle Cloud Infr
 |Plan                        | `terraform plan` is used to create an execution plan. This command is a convenient way to check the execution plan prior to make any changes to the infrastructure resources.|
 |Apply                       | `terraform apply` is used to apply the changes required to reach the desired state of the configuration described by the template.|
 |Destroy                     | `terraform destroy` is used to destroy the Terraform-managed infrastructure.|
+
+## Contributing
+
+This project welcomes contributions from the community. Before submitting a pull request, please [review our contribution guide](./CONTRIBUTING.md)
+
+## Security
+
+Please consult the [security guide](./SECURITY.md) for our responsible security vulnerability disclosure process
+
+## License
+
+Copyright (c) 2018-2021 Oracle and/or its affiliates.
+
+Released under the Universal Permissive License v1.0 as shown at
+<https://oss.oracle.com/licenses/upl/>.
